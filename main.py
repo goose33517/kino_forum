@@ -411,7 +411,7 @@ def unauthorized(e):
 
 def main():
     db_session.global_init("db/kino_forum.db")
-    app.run(debug=True)
+    app.run()
 
 if __name__ == '__main__':
     main()
