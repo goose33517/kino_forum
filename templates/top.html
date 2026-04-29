@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Топ фильмов{% endblock %}
+{% block content %}
+<h1 class="ya-section-title">🏆 Топ фильмов</h1>
+
+<div class="ya-grid ya-grid-2 ya-mb">
+    <div class="ya-card">
+        <h3>⭐ По рейтингу</h3>
+        {% for film in top_rated %}
+            <div class="ya-flex ya-mb">
+                <span style="font-weight:700;font-size:18px;width:30px">{{ loop.index }}</span>
+                <a href="/film/{{ film.id }}">{{ film.title }}</a>
+                <span class="ya-rating">{{ "%.1f"|format(film.rating) }}</span>
+                <span class="ya-text-muted ya-text-sm">{{ film.year }}</span>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="ya-card">
+        <h3>📝 По количеству отзывов</h3>
+        {% for film in most_reviewed %}
+            <div class="ya-flex ya-mb">
+                <span style="font-weight:700;font-size:18px;width:30px">{{ loop.index }}</span>
+                <a href="/film/{{ film.id }}">{{ film.title }}</a>
+                <span class="ya-text-muted">{{ film.review_count }} отзывов</span>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

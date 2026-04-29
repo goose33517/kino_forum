@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ user.name }}{% endblock %}
+{% block content %}
+<div class="ya-grid ya-grid-2 ya-mb">
+    <div class="ya-card" style="text-align:center">
+        <div class="ya-avatar ya-avatar-lg" style="background:{{ YANDEX_COLORS[user.id % 12] }};margin:0 auto">{{ user.name[0].upper() }}</div>
+        <h2 class="ya-mt">{{ user.name }}</h2>
+        <p class="ya-text-muted">{{ user.email }}</p>
+        {% if user.about %}<p>{{ user.about }}</p>{% endif %}
+        <p class="ya-text-muted ya-text-sm">На форуме с {{ user.created_date.strftime('%d.%m.%Y') }}</p>
+        {% if current_user.is_authenticated and current_user.id == user.id %}
+            <a href="/profile/edit" class="ya-btn ya-btn-yellow">⚙️ Редактировать</a>
+        {% endif %}
+    </div>
+    <div>
+        <div class="ya-card ya-mb">
+            <h3>🎬 Добавлено фильмов: {{ films|length }}</h3>
+            {% for film in films[:5] %}
+                <div class="ya-flex ya-mb">
+                    <span>🎬</span>
+                    <a href="/film/{{ film.id }}">{{ film.title }}</a>
+                    <span class="ya-text-muted ya-text-sm">({{ film.year }})</span>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="ya-card ya-mb">
+            <h3>💬 Тем на форуме: {{ posts|length }}</h3>
+            {% for post in posts[:5] %}
+                <div class="ya-mb">
+                    <a href="/forum/{{ post.id }}">{{ post.title }}</a>
+                    <div class="ya-text-muted ya-text-sm">💬 {{ post.comment_count }} ответов</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="ya-card">
+    <h3>📝 Последние рецензии</h3>
+    {% for review in reviews %}
+        <div class="ya-mb" style="border-bottom:1px solid #e0e0e0;padding-bottom:10px">
+            <a href="/film/{{ review.film.id }}"><strong>{{ review.title }}</strong></a>
+            <span class="ya-text-muted ya-text-sm">→ {{ review.film.title }}</span>
+            <p class="ya-text-sm">{{ review.content[:150] }}...</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

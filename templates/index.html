@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Кино.Форум - Главная{% endblock %}
+{% block content %}
+<h1 class="ya-section-title">🎬 Добро пожаловать на Кино.Форум</h1>
+
+<div class="ya-grid ya-grid-2 ya-mb">
+    <div class="ya-card">
+        <h3>🔥 Топ фильмов</h3>
+        {% for film in top_films %}
+            <div class="ya-flex ya-mb">
+                <span class="ya-rating">{{ "%.1f"|format(film.rating) }}</span>
+                <a href="/film/{{ film.id }}">{{ film.title }}</a>
+                <span class="ya-text-muted">({{ film.year }})</span>
+            </div>
+        {% endfor %}
+        <a href="/top" class="ya-btn ya-btn-outline ya-btn-sm">Весь рейтинг →</a>
+    </div>
+    <div class="ya-card">
+        <h3>💬 Форум</h3>
+        {% for post in latest_forum %}
+            <div class="ya-flex ya-mb">
+                <div class="ya-avatar ya-avatar-sm" style="background:{{ YANDEX_COLORS[post.user.id % 12] }}">{{ post.user.name[0].upper() }}</div>
+                <div>
+                    <a href="/forum/{{ post.id }}">{{ post.title }}</a>
+                    <div class="ya-text-muted ya-text-sm">{{ post.comment_count }} ответов</div>
+                </div>
+            </div>
+        {% endfor %}
+        <a href="/forum" class="ya-btn ya-btn-outline ya-btn-sm">На форум →</a>
+    </div>
+</div>
+
+<h2 class="ya-section-title">🆕 Новые фильмы</h2>
+<div class="ya-grid ya-grid-3 ya-mb">
+    {% for film in latest_films %}
+        <a href="/film/{{ film.id }}" style="text-decoration:none;color:#000">
+            <div class="ya-card">
+                <div class="ya-film-poster">🎬</div>
+                <h4 class="ya-mt">{{ film.title }}</h4>
+                <div class="ya-flex">
+                    <span class="ya-rating">⭐{{ "%.1f"|format(film.rating) }}</span>
+                    <span class="ya-text-muted ya-text-sm">{{ film.year }}</span>
+                </div>
+                {% for g in film.genre.split(',')[:2] %}<span class="ya-tag">{{ g.strip() }}</span>{% endfor %}
+            </div>
+        </a>
+    {% endfor %}
+</div>
+
+<h2 class="ya-section-title">📝 Последние рецензии</h2>
+{% for review in latest_reviews %}
+    <div class="ya-card">
+        <div class="ya-flex ya-mb">
+            <div class="ya-avatar ya-avatar-sm" style="background:{{ YANDEX_COLORS[review.user.id % 12] }}">{{ review.user.name[0].upper() }}</div>
+            <strong>{{ review.user.name }}</strong>
+            <span class="ya-text-muted ya-text-sm">→ <a href="/film/{{ review.film.id }}">{{ review.film.title }}</a></span>
+        </div>
+        <h4>{{ review.title }}</h4>
+        <p>{{ review.content[:200] }}...</p>
+    </div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Форум{% endblock %}
+{% block content %}
+<div class="ya-flex-between ya-mb">
+    <h1 class="ya-section-title">💬 Форум</h1>
+    {% if current_user.is_authenticated %}
+        <a href="/forum/add" class="ya-btn ya-btn-yellow">➕ Новая тема</a>
+    {% endif %}
+</div>
+
+{% for post in posts %}
+    <div class="ya-card">
+        <div class="ya-flex ya-mb">
+            <a href="/profile/{{ post.user.id }}" class="ya-avatar ya-avatar-sm" style="background:{{ YANDEX_COLORS[post.user.id % 12] }};text-decoration:none">{{ post.user.name[0].upper() }}</a>
+            <div>
+                <span class="ya-tag">{{ post.category }}</span>
+                <div class="ya-text-muted ya-text-sm">{{ post.created_date.strftime('%d.%m.%Y %H:%M') }}</div>
+            </div>
+        </div>
+        <h3><a href="/forum/{{ post.id }}">{{ post.title }}</a></h3>
+        <p class="ya-mb">{{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}</p>
+        <div class="ya-flex ya-text-muted ya-text-sm">
+            <span>👁 {{ post.views }}</span>
+            <span>💬 {{ post.comment_count }} ответов</span>
+            <span>👤 {{ post.user.name }}</span>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}

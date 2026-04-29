@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Добавить фильм{% endblock %}
+{% block content %}
+<div class="ya-card" style="max-width:600px;margin:0 auto">
+    <h1>➕ Добавить фильм</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="ya-input-group">
+            {{ form.title.label }}
+            {{ form.title(class="ya-input", placeholder="Название фильма") }}
+            {% for error in form.title.errors %}<div class="ya-alert ya-alert-error ya-text-sm ya-mt">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="ya-input-group">
+            {{ form.director.label }}
+            {{ form.director(class="ya-input", placeholder="Режиссер") }}
+            {% for error in form.director.errors %}<div class="ya-alert ya-alert-error ya-text-sm ya-mt">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="ya-grid ya-grid-2">
+            <div class="ya-input-group">
+                {{ form.year.label }}
+                {{ form.year(class="ya-input") }}
+            </div>
+            <div class="ya-input-group">
+                {{ form.duration.label }}
+                {{ form.duration(class="ya-input", placeholder="Минуты") }}
+            </div>
+        </div>
+        <div class="ya-grid ya-grid-2">
+            <div class="ya-input-group">
+                {{ form.genre.label }}
+                {{ form.genre(class="ya-input") }}
+            </div>
+            <div class="ya-input-group">
+                {{ form.country.label }}
+                {{ form.country(class="ya-input") }}
+            </div>
+        </div>
+        <div class="ya-input-group">
+            {{ form.description.label }}
+            {{ form.description(class="ya-input", rows=5, placeholder="Описание фильма...") }}
+        </div>
+        {{ form.submit(class="ya-btn ya-btn-yellow", style="width:100%") }}
+    </form>
+</div>
+{% endblock %}

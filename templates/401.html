@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}401 - Не авторизован{% endblock %}
+{% block content %}
+<div class="ya-card" style="text-align:center;max-width:500px;margin:60px auto">
+    <h1>🔒 401</h1>
+    <h2>Вы не авторизованы!</h2>
+    <p class="ya-mt">Для доступа к этой странице необходимо войти</p>
+    <div class="ya-flex ya-mt" style="justify-content:center">
+        <a href="/login" class="ya-btn ya-btn-yellow">🔑 Войти</a>
+        <a href="/register" class="ya-btn ya-btn-black">📝 Регистрация</a>
+    </div>
+    <a href="/" class="ya-btn ya-btn-gray ya-mt">🏠 На главную</a>
+</div>
+{% endblock %}

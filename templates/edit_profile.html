@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Редактирование профиля{% endblock %}
+{% block content %}
+<div class="ya-card" style="max-width:500px;margin:0 auto">
+    <h1>⚙️ Редактирование профиля</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="ya-input-group">
+            {{ form.name.label }}
+            {{ form.name(class="ya-input") }}
+            {% for error in form.name.errors %}<div class="ya-alert ya-alert-error ya-text-sm ya-mt">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="ya-input-group">
+            {{ form.email.label }}
+            {{ form.email(class="ya-input") }}
+            {% for error in form.email.errors %}<div class="ya-alert ya-alert-error ya-text-sm ya-mt">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="ya-input-group">
+            {{ form.about.label }}
+            {{ form.about(class="ya-input", rows=4) }}
+        </div>
+        <div class="ya-flex">
+            {{ form.submit(class="ya-btn ya-btn-yellow") }}
+            <a href="/profile/{{ current_user.id }}" class="ya-btn ya-btn-gray">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

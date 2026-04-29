@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Оставьте отзыв о фильме</h1>
+    
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <!-- Поле: Название фильма -->
+        <div class="mb-3">
+            {{ form.movie.label(class="form-label") }}
+            {{ form.movie(class="form-control", placeholder="Введите название фильма") }}
+            {% for error in form.movie.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        
+        <!-- Поле: Оценка -->
+        <div class="mb-3">
+            {{ form.rating.label(class="form-label") }}
+            {{ form.rating(class="form-control", placeholder="Оценка от 1 до 10") }}
+            {% for error in form.rating.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        
+        <!-- Поле: Отзыв -->
+        <div class="mb-3">
+            {{ form.review.label(class="form-label") }}
+            {{ form.review(class="form-control", rows=5, placeholder="Напишите ваш отзыв...") }}
+            {% for error in form.review.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        
+        <!-- Чекбокс согласия -->
+        <div class="mb-3 form-check">
+            {{ form.agree(class="form-check-input") }}
+            {{ form.agree.label(class="form-check-label") }}
+            {% for error in form.agree.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        
+        <!-- Кнопка отправки -->
+        <div class="mb-3">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+    
+    <!-- Сообщение после успешной отправки -->
+    {% if submitted %}
+        <div class="alert alert-success mt-3">
+            Спасибо за ваш отзыв!
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

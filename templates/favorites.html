@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Избранное{% endblock %}
+{% block content %}
+<h1 class="ya-section-title">⭐ Избранные фильмы</h1>
+{% if films %}
+    <div class="ya-grid ya-grid-3">
+        {% for film in films %}
+            <a href="/film/{{ film.id }}" style="text-decoration:none;color:#000">
+                <div class="ya-card">
+                    <div class="ya-film-poster">🎬</div>
+                    <h4 class="ya-mt">{{ film.title }}</h4>
+                    <div class="ya-flex">
+                        <span class="ya-rating">⭐{{ "%.1f"|format(film.rating) }}</span>
+                        <span class="ya-text-muted ya-text-sm">{{ film.year }}</span>
+                    </div>
+                    {% for g in film.genre.split(',')[:2] %}<span class="ya-tag">{{ g.strip() }}</span>{% endfor %}
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="ya-card">
+        <p>У вас пока нет избранных фильмов</p>
+        <a href="/films" class="ya-btn ya-btn-yellow">Найти фильмы</a>
+    </div>
+{% endif %}
+{% endblock %}

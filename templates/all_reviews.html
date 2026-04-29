@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Все отзывы пользователей</h1>
+
+{% for review in reviews %}
+    <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+        <strong>{{ review.user_name }}</strong> 
+        поставил оценку: <strong>{{ review.rating }}/10</strong>
+        <p>{{ review.text }}</p>
+        <small>Отзыв №{{ review.id }}</small>
+    </div>
+{% endfor %}
+
+<a href="/pyp">Написать отзыв →</a>
+{% endblock %}

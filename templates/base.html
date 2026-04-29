@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Кино.Форум{% endblock %}</title>
+    {{ STYLE|safe }}
+</head>
+<body>
+    {{ get_header()|safe }}
+    <main class="ya-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="ya-alert {% if category == 'success' %}ya-alert-success{% elif category == 'error' %}ya-alert-error{% else %}ya-alert-info{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="ya-footer">
+        <p>© 2026 Кино.Форум — Обсуждаем кино вместе</p>
+    </footer>
+</body>
+</html>

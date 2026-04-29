@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+<div class="ya-card" style="max-width:400px;margin:40px auto">
+    <h1>🔑 Вход</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="ya-input-group">
+            {{ form.email.label }}
+            {{ form.email(class="ya-input", type="email", placeholder="Введите почту") }}
+            {% for error in form.email.errors %}<div class="ya-alert ya-alert-error ya-text-sm ya-mt">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="ya-input-group">
+            {{ form.password.label }}
+            {{ form.password(class="ya-input", type="password", placeholder="Введите пароль") }}
+            {% for error in form.password.errors %}<div class="ya-alert ya-alert-error ya-text-sm ya-mt">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="ya-flex ya-mb">
+            {{ form.remember_me() }}
+            <span>{{ form.remember_me.label }}</span>
+        </div>
+        {{ form.submit(class="ya-btn ya-btn-yellow", style="width:100%") }}
+        {% if message %}<div class="ya-alert ya-alert-error ya-mt">{{ message }}</div>{% endif %}
+    </form>
+    <p class="ya-mt" style="text-align:center">Нет аккаунта? <a href="/register">Регистрация</a></p>
+</div>
+{% endblock %}

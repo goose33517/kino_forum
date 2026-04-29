@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+<div class="ya-card">
+    <div class="ya-flex ya-mb">
+        <a href="/profile/{{ post.user.id }}" class="ya-avatar" style="background:{{ YANDEX_COLORS[post.user.id % 12] }};text-decoration:none">{{ post.user.name[0].upper() }}</a>
+        <div>
+            <a href="/profile/{{ post.user.id }}"><strong>{{ post.user.name }}</strong></a>
+            <div class="ya-text-muted ya-text-sm">{{ post.created_date.strftime('%d.%m.%Y %H:%M') }}</div>
+        </div>
+        <span class="ya-tag">{{ post.category }}</span>
+    </div>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <div class="ya-text-muted ya-text-sm ya-mt">👁 {{ post.views }} просмотров</div>
+</div>
+
+<h2 class="ya-section-title">💬 Ответы ({{ comments|length }})</h2>
+{% if current_user.is_authenticated %}
+    <div class="ya-card ya-mb">
+        <form method="POST" action="/forum/{{ post.id }}/comment">
+            {{ form.hidden_tag() }}
+            <div class="ya-input-group">
+                {{ form.content(class="ya-input", rows=3, placeholder="Ваш ответ...") }}
+                {% for error in form.content.errors %}<div class="ya-alert ya-alert-error ya-text-sm ya-mt">{{ error }}</div>{% endfor %}
+            </div>
+            {{ form.submit(class="ya-btn ya-btn-yellow") }}
+        </form>
+    </div>
+{% else %}
+    <div class="ya-alert ya-alert-info"><a href="/login">Войдите</a> чтобы ответить</div>
+{% endif %}
+
+{% for comment in comments %}
+    <div class="ya-card">
+        <div class="ya-flex ya-mb">
+            <a href="/profile/{{ comment.user.id }}" class="ya-avatar ya-avatar-sm" style="background:{{ YANDEX_COLORS[comment.user.id % 12] }};text-decoration:none">{{ comment.user.name[0].upper() }}</a>
+            <div>
+                <a href="/profile/{{ comment.user.id }}"><strong>{{ comment.user.name }}</strong></a>
+                <div class="ya-text-muted ya-text-sm">{{ comment.created_date.strftime('%d.%m.%Y %H:%M') }}</div>
+            </div>
+        </div>
+        <p>{{ comment.content }}</p>
+    </div>
+{% endfor %}
+{% endblock %}

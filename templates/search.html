@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Поиск{% endblock %}
+{% block content %}
+<h1 class="ya-section-title">🔍 Поиск</h1>
+
+<div class="ya-card ya-mb">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="ya-flex">
+            <div style="flex:1">
+                {{ form.query(class="ya-input", placeholder="Поиск фильмов, рецензий, тем...") }}
+            </div>
+            {{ form.submit(class="ya-btn ya-btn-yellow") }}
+        </div>
+    </form>
+</div>
+
+{% if results %}
+    {% if results.films %}
+        <h2 class="ya-section-title">🎬 Фильмы ({{ results.films|length }})</h2>
+        {% for film in results.films %}
+            <div class="ya-card">
+                <div class="ya-flex">
+                    <div class="ya-film-poster" style="width:80px;height:120px;font-size:30px">🎬</div>
+                    <div>
+                        <h3><a href="/film/{{ film.id }}">{{ film.title }}</a></h3>
+                        <span class="ya-rating">⭐{{ "%.1f"|format(film.rating) }}</span>
+                        <span class="ya-text-muted">{{ film.year }}</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    {% if results.reviews %}
+        <h2 class="ya-section-title">📝 Рецензии ({{ results.reviews|length }})</h2>
+        {% for review in results.reviews %}
+            <div class="ya-card">
+                <div class="ya-flex ya-mb">
+                    <div class="ya-avatar ya-avatar-sm" style="background:{{ YANDEX_COLORS[review.user.id % 12] }}">{{ review.user.name[0].upper() }}</div>
+                    <a href="/film/{{ review.film.id }}"><strong>{{ review.title }}</strong></a>
+                </div>
+                <p>{{ review.content[:200] }}...</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    {% if results.posts %}
+        <h2 class="ya-section-title">💬 Темы форума ({{ results.posts|length }})</h2>
+        {% for post in results.posts %}
+            <div class="ya-card">
+                <h3><a href="/forum/{{ post.id }}">{{ post.title }}</a></h3>
+                <p>{{ post.content[:150] }}...</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endif %}
+{% endblock %}

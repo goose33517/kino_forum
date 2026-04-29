@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Поиск записей пользователя</h1>
+
+    <form method="post">
+        {{ form.hidden_tag() }}  <!-- ← БЕЗ ЭТОГО НЕ РАБОТАЕТ! -->
+
+        <p>
+            {{ form.naiti.label }}<br>
+            {{ form.naiti(class="form-control") }}<br>
+            {% for error in form.naiti.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.submit(class="btn btn-primary") }}
+        </p>
+    </form>
+
+    {% if posts %}
+        <h3>Записи пользователя:</h3>
+        {% for post in posts %}
+            <div style="border:1px solid #ddd; padding:10px; margin:10px 0">
+                {{ post }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

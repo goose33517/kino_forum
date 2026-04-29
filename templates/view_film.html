@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}{{ film.title }}{% endblock %}
+{% block content %}
+<div class="ya-grid ya-grid-2 ya-mb">
+    <div>
+        <div class="ya-film-poster" style="height:400px">🎬</div>
+        {% if current_user.is_authenticated %}
+            <div class="ya-flex ya-mt">
+                <form method="POST" action="/rate_film/{{ film.id }}" class="ya-flex">
+                    <select name="rating" class="ya-input" style="width:auto">
+                        <option value="0">Оценить</option>
+                        {% for i in range(1, 11) %}
+                            <option value="{{ i }}" {% if user_rating == i %}selected{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="ya-btn ya-btn-yellow ya-btn-sm">OK</button>
+                </form>
+                <a href="/favorite/{{ film.id }}" class="ya-btn ya-btn-sm {% if is_favorite %}ya-btn-red{% else %}ya-btn-outline{% endif %}">
+                    {% if is_favorite %}❤️{% else %}🤍{% endif %}
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    <div>
+        <h1>{{ film.title }}</h1>
+        <div class="ya-flex ya-mb">
+            <span class="ya-rating" style="font-size:30px">⭐{{ "%.1f"|format(avg_rating) }}</span>
+            <span class="ya-text-muted">({{ film.review_count }} отзывов)</span>
+        </div>
+        <div class="ya-grid ya-grid-2 ya-mb">
+            <div><strong>Режиссер:</strong> {{ film.director }}</div>
+            <div><strong>Год:</strong> {{ film.year }}</div>
+            <div><strong>Страна:</strong> {{ film.country }}</div>
+            <div><strong>Длительность:</strong> {{ film.duration }} мин</div>
+        </div>
+        <div class="ya-mb">{% for g in film.genre.split(',') %}<span class="ya-tag">{{ g.strip() }}</span>{% endfor %}</div>
+        <p>{{ film.description }}</p>
+        <div class="ya-text-muted ya-text-sm">Добавил: <a href="/profile/{{ film.user.id }}">{{ film.user.name }}</a></div>
+    </div>
+</div>
+
+{% if similar_films %}
+    <h2 class="ya-section-title">🎯 Похожие фильмы</h2>
+    <div class="ya-grid ya-grid-4 ya-mb">
+        {% for sf in similar_films %}
+            <a href="/film/{{ sf.id }}" style="text-decoration:none;color:#000">
+                <div class="ya-card">
+                    <div class="ya-film-poster" style="height:200px;font-size:40px">🎬</div>
+                    <h5 class="ya-mt">{{ sf.title }}</h5>
+                    <span class="ya-rating">⭐{{ "%.1f"|format(sf.rating) }}</span>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<h2 class="ya-section-title">📝 Рецензии ({{ reviews|length }})</h2>
+{% if current_user.is_authenticated %}
+    <a href="/film/{{ film.id }}/review" class="ya-btn ya-btn-yellow ya-mb">Написать рецензию</a>
+{% endif %}
+{% for review in reviews %}
+    <div class="ya-card">
+        <div class="ya-flex ya-mb">
+            <a href="/profile/{{ review.user.id }}" class="ya-avatar ya-avatar-sm" style="background:{{ YANDEX_COLORS[review.user.id % 12] }};text-decoration:none">{{ review.user.name[0].upper() }}</a>
+            <div>
+                <a href="/profile/{{ review.user.id }}"><strong>{{ review.user.name }}</strong></a>
+                <div class="ya-text-muted ya-text-sm">{{ review.created_date.strftime('%d.%m.%Y') }}</div>
+            </div>
+        </div>
+        <h4>{{ review.title }}</h4>
+        <p>{{ review.content }}</p>
+    </div>
+{% endfor %}
+{% endblock %}

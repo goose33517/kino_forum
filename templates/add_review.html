@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Рецензия на {{ film.title }}{% endblock %}
+{% block content %}
+<div class="ya-card" style="max-width:600px;margin:0 auto">
+    <h1>📝 Рецензия на "{{ film.title }}"</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="ya-input-group">
+            {{ form.title.label }}
+            {{ form.title(class="ya-input", placeholder="Заголовок рецензии") }}
+            {% for error in form.title.errors %}<div class="ya-alert ya-alert-error ya-text-sm ya-mt">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="ya-input-group">
+            {{ form.rating.label }}
+            {{ form.rating(class="ya-input", placeholder="От 1 до 10", type="number", min="1", max="10") }}
+            {% for error in form.rating.errors %}<div class="ya-alert ya-alert-error ya-text-sm ya-mt">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="ya-input-group">
+            {{ form.content.label }}
+            {{ form.content(class="ya-input", rows=8, placeholder="Текст рецензии...") }}
+            {% for error in form.content.errors %}<div class="ya-alert ya-alert-error ya-text-sm ya-mt">{{ error }}</div>{% endfor %}
+        </div>
+        {{ form.submit(class="ya-btn ya-btn-yellow", style="width:100%") }}
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main-container">
+    <h1>{{ title }}</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.title.label }}<br>
+            {{ form.title(class="ya-input") }}<br>
+            {% for error in form.title.errors %}
+                <div class="ya-alert ya-alert-error">{{ error }}</div>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.content.label }}<br>
+            {{ form.content(class="ya-input", rows=10) }}<br>
+            {% for error in form.content.errors %}
+                <div class="ya-alert ya-alert-error">{{ error }}</div>
+            {% endfor %}
+        </p>
+        <p style="display: flex; align-items: center; gap: 10px;">
+            {{ form.is_private() }} {{ form.is_private.label }}
+        </p>
+        <p>{{ form.submit(type="submit", class="ya-btn ya-btn-yellow") }}</p>
+        {% if message %}
+            <div class="ya-alert ya-alert-error">{{ message }}</div>
+        {% endif %}
+    </form>
+    <a href="/" class="ya-btn ya-btn-gray">Назад к новостям</a>
+</div>
+{% endblock %}

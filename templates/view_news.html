@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Сама новость -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>{{ news.title }}</h2>
+            <small class="text-muted">
+                Автор: {{ news.user.name }} | 
+                Дата: {{ news.created_date.strftime('%d.%m.%Y %H:%M') }}
+            </small>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ news.content }}</p>
+        </div>
+        
+        {% if current_user.is_authenticated and current_user == news.user %}
+        <div class="card-footer">
+            <a href="/news/{{ news.id }}" class="btn btn-warning">Редактировать</a>
+            <a href="/news_delete/{{ news.id }}" class="btn btn-danger" 
+               onclick="return confirm('Удалить новость?')">Удалить</a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Форма добавления комментария -->
+    {% if current_user.is_authenticated %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Добавить комментарий</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('add_comment', news_id=news.id) }}">
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-3">
+                    {{ form.comment(class="form-control", rows=3, 
+                                   placeholder="Напишите ваш комментарий...") }}
+                    {% for error in form.comment.errors %}
+                        <div class="alert alert-danger mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                {{ form.otpravit(class="btn btn-primary") }}
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <a href="{{ url_for('login') }}">Войдите</a>, чтобы оставить комментарий
+    </div>
+    {% endif %}
+    
+    <!-- Список комментариев -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Комментарии ({{ comments|length }})</h5>
+        </div>
+        <div class="card-body">
+            {% if comments %}
+                {% for comment in comments %}
+                <div class="border-bottom mb-3 pb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>{{ comment.user.name }}</strong>
+                        <small class="text-muted">
+                            {{ comment.created_date.strftime('%d.%m.%Y %H:%M') }}
+                        </small>
+                    </div>
+                    <p class="mt-2">{{ comment.content }}</p>
+                    
+                    {% if current_user.is_authenticated and current_user.id == comment.user_id %}
+                    <div class="text-end">
+                        <a href="{{ url_for('delete_comment', comment_id=comment.id) }}" 
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Удалить комментарий?')">
+                            Удалить
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">Нет комментариев. Будьте первым!</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <a href="/" class="btn btn-secondary mt-3">← Назад к новостям</a>
+</div>
+{% endblock %}

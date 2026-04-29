@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Новая тема{% endblock %}
+{% block content %}
+<div class="ya-card" style="max-width:600px;margin:0 auto">
+    <h1>💬 Новая тема</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="ya-input-group">
+            {{ form.title.label }}
+            {{ form.title(class="ya-input", placeholder="Название темы") }}
+            {% for error in form.title.errors %}<div class="ya-alert ya-alert-error ya-text-sm ya-mt">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="ya-input-group">
+            {{ form.category.label }}
+            {{ form.category(class="ya-input") }}
+        </div>
+        <div class="ya-input-group">
+            {{ form.content.label }}
+            {{ form.content(class="ya-input", rows=8, placeholder="Текст сообщения...") }}
+            {% for error in form.content.errors %}<div class="ya-alert ya-alert-error ya-text-sm ya-mt">{{ error }}</div>{% endfor %}
+        </div>
+        {{ form.submit(class="ya-btn ya-btn-yellow", style="width:100%") }}
+    </form>
+</div>
+{% endblock %}
